@@ -1,62 +1,31 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, PixelRatio } from 'react-native';
-import styles from './style';
-import PrimaryButton from '@/components/PrimaryButton';
-import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React from 'react';
+import { StatusBar, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from '../screens/Login';
+import ChooseUserType from '../screens/ChooseUserType';
+import NewUser from '@/screens/NewUser';
+import Theme from '../theme';
+import ChooseShop from '../screens/ChooseShop';
+import MakeShop from '../screens/MakeShop';
 
-const ChooseShop = () => {
-  const navigation = useNavigation();
-  const [userType, setUserType] = useState<string | null>(null);
+const RootStack = createNativeStackNavigator();
 
+const MainNavigation = () => {
   return (
-    <View style={styles.mainView}>
-      <ScrollView>	
-
-
-            {/* -----------------*/}
-
-      <Text style={styles.mainHeader}>
-        문다현님의{'\n'}
-        현재 매장은 2개
-      </Text>
-      <Text style={styles.mainText}>
-        매장을 선택하고 입장해보세요
-      </Text>
-      <View style={styles.buttonWrapper}>
-        <TouchableOpacity
-          style={[styles.button, userType === 'customer' ? styles.activatedBtn : {}]}
-          onPress={() => setUserType('customer')}>
-          <Image style={styles.customerIcon} source={require('@/assets/imgs/shop/market_icon.png')} />
-          <Text style={[styles.buttonHeader, userType === 'customer' ? styles.activatedText : {}]}>새로운 매장 등록하기</Text>
-          
-        </TouchableOpacity>
-        <View style={styles.gap} />
-        <TouchableOpacity
-          style={[styles.button, userType === 'artist' ? styles.activatedBtn : {}]}
-          onPress={() => setUserType('artist')}>
-          <Image style={styles.customerIcon} source={require('@/assets/imgs/shop/small_icon.webp')} />
-          <Text style={[styles.buttonHeader, userType === 'artist' ? styles.activatedText : {}]}>마이브로우로 입장하기</Text>
-         
-        </TouchableOpacity>
-      </View>
-
-            {/* -----------------*/}
-
-
-
- 
-
-             
-
-            <Text>{"\n"}</Text>
-
-
-
-      <PrimaryButton onPress={() => navigation.navigate('MakeShop')} text={'확인'} />
-      </ScrollView>
-    </View>
+    <NavigationContainer theme={Theme}>
+      <StatusBar barStyle={'dark-content'} />
+      <RootStack.Navigator
+        initialRouteName={'MakeShop'}
+        screenOptions={{ headerShown: false, animation: 'slide_from_right', gestureEnabled: true }}>
+        <RootStack.Screen name="Login" component={Login} />
+        <RootStack.Screen name="ChooseUserType" component={ChooseUserType} />
+        <RootStack.Screen name="NewUser" component={NewUser} />
+        <RootStack.Screen name="ChooseShop" component={ChooseShop} />
+        <RootStack.Screen name="MakeShop" component={MakeShop} />
+      </RootStack.Navigator>
+    </NavigationContainer>
   );
 };
 
-export default ChooseShop;
+export default MainNavigation;
